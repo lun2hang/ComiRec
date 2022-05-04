@@ -1,0 +1,92 @@
+training begin
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 1000, train loss: 7.9331, valid recall: 0.023440, valid ndcg: 0.015463, valid hitrate: 0.048818
+time interval: 7.5989 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 2000, train loss: 7.6282, valid recall: 0.024674, valid ndcg: 0.017525, valid hitrate: 0.051750
+time interval: 14.9912 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 3000, train loss: 7.2980, valid recall: 0.028390, valid ndcg: 0.020281, valid hitrate: 0.058973
+time interval: 22.4447 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 4000, train loss: 7.0618, valid recall: 0.030802, valid ndcg: 0.022238, valid hitrate: 0.063114
+time interval: 29.7392 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 5000, train loss: 6.9021, valid recall: 0.033727, valid ndcg: 0.023761, valid hitrate: 0.068266
+time interval: 37.0653 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 6000, train loss: 6.7924, valid recall: 0.034593, valid ndcg: 0.024864, valid hitrate: 0.070038
+time interval: 44.5837 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 7000, train loss: 6.6981, valid recall: 0.036525, valid ndcg: 0.026448, valid hitrate: 0.074511
+time interval: 51.9009 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 8000, train loss: 6.6263, valid recall: 0.037916, valid ndcg: 0.027099, valid hitrate: 0.076731
+time interval: 59.1897 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 9000, train loss: 6.5359, valid recall: 0.038297, valid ndcg: 0.027880, valid hitrate: 0.077112
+time interval: 66.4793 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 10000, train loss: 6.4535, valid recall: 0.040633, valid ndcg: 0.029122, valid hitrate: 0.082462
+time interval: 73.7851 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 11000, train loss: 6.3326, valid recall: 0.046738, valid ndcg: 0.035295, valid hitrate: 0.098017
+time interval: 81.6392 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 12000, train loss: 6.2620, valid recall: 0.049101, valid ndcg: 0.037148, valid hitrate: 0.103948
+time interval: 89.3405 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 13000, train loss: 6.1964, valid recall: 0.050695, valid ndcg: 0.038201, valid hitrate: 0.106499
+time interval: 96.7362 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 14000, train loss: 6.1353, valid recall: 0.052286, valid ndcg: 0.039590, valid hitrate: 0.109878
+time interval: 104.4764 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 15000, train loss: 6.0841, valid recall: 0.054229, valid ndcg: 0.040869, valid hitrate: 0.114152
+time interval: 112.2648 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 16000, train loss: 6.0219, valid recall: 0.055087, valid ndcg: 0.041807, valid hitrate: 0.115825
+time interval: 119.8912 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 17000, train loss: 5.9649, valid recall: 0.056284, valid ndcg: 0.042608, valid hitrate: 0.118177
+time interval: 127.2239 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 18000, train loss: 5.9081, valid recall: 0.057562, valid ndcg: 0.043945, valid hitrate: 0.121126
+time interval: 134.4954 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 19000, train loss: 5.8547, valid recall: 0.059647, valid ndcg: 0.045161, valid hitrate: 0.125019
+time interval: 141.7587 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 20000, train loss: 5.7959, valid recall: 0.060769, valid ndcg: 0.045985, valid hitrate: 0.127934
+time interval: 149.0164 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 21000, train loss: 5.7360, valid recall: 0.061672, valid ndcg: 0.046637, valid hitrate: 0.129789
+time interval: 156.2672 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 22000, train loss: 5.6886, valid recall: 0.062473, valid ndcg: 0.046929, valid hitrate: 0.130817
+time interval: 163.5226 min
+
+recall和hitrate超文章，ndcg低一半
+
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 23000, train loss: 5.6271, valid recall: 0.063842, valid ndcg: 0.047462, valid hitrate: 0.133815
+time interval: 171.1421 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 24000, train loss: 5.5681, valid recall: 0.064528, valid ndcg: 0.048232, valid hitrate: 0.135057
+time interval: 178.4765 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 25000, train loss: 5.5132, valid recall: 0.066225, valid ndcg: 0.049020, valid hitrate: 0.137840
+time interval: 185.7492 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 26000, train loss: 5.4574, valid recall: 0.066827, valid ndcg: 0.049633, valid hitrate: 0.139265
+time interval: 193.0469 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 27000, train loss: 5.4015, valid recall: 0.068389, valid ndcg: 0.050308, valid hitrate: 0.141783
+time interval: 200.3640 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 28000, train loss: 5.3474, valid recall: 0.069130, valid ndcg: 0.050572, valid hitrate: 0.143539
+time interval: 207.6362 min
+book_ComiRec-SA_b128_lr0.001_d64_len20_5.4
+iter: 29000, train loss: 5.2980, valid recall: 0.070036, valid ndcg: 0.050670, valid hitrate: 0.145328
+time interval: 214.9231 min
+

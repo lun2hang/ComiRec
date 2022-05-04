@@ -85,3 +85,4 @@ Please cite our paper if you find this code useful for your research:
   publisher = {ACM},
 }
 ```
+居然训练在cpu上，索引在gpu上。7分钟过1000个iter，这怎么能高效迭代
