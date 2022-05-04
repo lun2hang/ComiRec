@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-from tensorflow.nn.rnn_cell import GRUCell
+# 不要这个基线，以回避tf降级 from tensorflow.nn.rnn_cell import GRUCell
 
 
 class Model(object):
@@ -13,30 +13,30 @@ class Model(object):
         self.n_mid = n_mid
         self.neg_num = 10
         with tf.name_scope('Inputs'):
-            self.mid_his_batch_ph = tf.placeholder(tf.int32, [None, None], name='mid_his_batch_ph')
-            self.uid_batch_ph = tf.placeholder(tf.int32, [None, ], name='uid_batch_ph')
-            self.mid_batch_ph = tf.placeholder(tf.int32, [None, ], name='mid_batch_ph')
-            self.mask = tf.placeholder(tf.float32, [None, None], name='mask_batch_ph')
-            self.target_ph = tf.placeholder(tf.float32, [None, 2], name='target_ph')
-            self.lr = tf.placeholder(tf.float64, [])
+            self.mid_his_batch_ph = tf.placeholder(tf.int32, [None, None], name='mid_his_batch_ph')  # 历史物品序列wwindd
+            self.uid_batch_ph = tf.placeholder(tf.int32, [None, ], name='uid_batch_ph')  # 这个batch的用户集合
+            self.mid_batch_ph = tf.placeholder(tf.int32, [None, ], name='mid_batch_ph')  # 这个batch用户有互动的物品集合
+            self.mask = tf.placeholder(tf.float32, [None, None], name='mask_batch_ph')  # 训练掩码
+            self.target_ph = tf.placeholder(tf.float32, [None, 2], name='target_ph')  # 正样本
+            self.lr = tf.placeholder(tf.float64, [])   # 学习率
 
-        self.mask_length = tf.cast(tf.reduce_sum(self.mask, -1), dtype=tf.int32)
+        self.mask_length = tf.cast(tf.reduce_sum(self.mask, -1), dtype=tf.int32)  # 2维向量，在第二维求和，看显示多少元素
 
         # Embedding layer
         with tf.name_scope('Embedding_layer'):
-            self.mid_embeddings_var = tf.get_variable("mid_embedding_var", [n_mid, embedding_dim], trainable=True)
+            self.mid_embeddings_var = tf.get_variable("mid_embedding_var", [n_mid, embedding_dim], trainable=True)  # 获取或创建变量，所有物品的emb变量
             self.mid_embeddings_bias = tf.get_variable("bias_lookup_table", [n_mid], initializer=tf.zeros_initializer(), trainable=False)
-            self.mid_batch_embedded = tf.nn.embedding_lookup(self.mid_embeddings_var, self.mid_batch_ph)
-            self.mid_his_batch_embedded = tf.nn.embedding_lookup(self.mid_embeddings_var, self.mid_his_batch_ph)
+            self.mid_batch_embedded = tf.nn.embedding_lookup(self.mid_embeddings_var, self.mid_batch_ph)  # 用batch的mid lookup出对应的emb向量
+            self.mid_his_batch_embedded = tf.nn.embedding_lookup(self.mid_embeddings_var, self.mid_his_batch_ph)  # 同上，提取范围是历史
 
         self.item_eb = self.mid_batch_embedded
-        self.item_his_eb = self.mid_his_batch_embedded * tf.reshape(self.mask, (-1, seq_len, 1))
+        self.item_his_eb = self.mid_his_batch_embedded * tf.reshape(self.mask, (-1, seq_len, 1))  # his加mask掩码
 
 
-    def build_sampled_softmax_loss(self, item_emb, user_emb):
+    def build_sampled_softmax_loss(self, item_emb, user_emb):  # user emb在batch样本的label下，跟物品全集算带负采样的softmax的loss
         self.loss = tf.reduce_mean(tf.nn.sampled_softmax_loss(self.mid_embeddings_var, self.mid_embeddings_bias, tf.reshape(self.mid_batch_ph, [-1, 1]), user_emb, self.neg_num * self.batch_size, self.n_mid))
 
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss)
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss)  # loss加入优化器
 
     def train(self, sess, inps):
         feed_dict = {
@@ -49,18 +49,18 @@ class Model(object):
         loss, _ = sess.run([self.loss, self.optimizer], feed_dict=feed_dict)
         return loss
 
-    def output_item(self, sess):
+    def output_item(self, sess):  # 输出训好的所有item的emb
         item_embs = sess.run(self.mid_embeddings_var)
         return item_embs
 
-    def output_user(self, sess, inps):
+    def output_user(self, sess, inps):  # 输出user emb
         user_embs = sess.run(self.user_eb, feed_dict={
             self.mid_his_batch_ph: inps[0],
             self.mask: inps[1]
         })
         return user_embs
     
-    def save(self, sess, path):
+    def save(self, sess, path):  # 存读模型
         if not os.path.exists(path):
             os.makedirs(path)
         saver = tf.train.Saver()
@@ -76,11 +76,14 @@ class Model_DNN(Model):
         super(Model_DNN, self).__init__(n_mid, embedding_dim, hidden_size,
                                            batch_size, seq_len, flag="DNN")
 
-        masks = tf.concat([tf.expand_dims(self.mask, -1) for _ in range(embedding_dim)], axis=-1)
+        masks = tf.concat([tf.expand_dims(self.mask, -1) for _ in range(embedding_dim)], axis=-1)   # 一个mask生效到batch里所有样本
 
-        self.item_his_eb_mean = tf.reduce_sum(self.item_his_eb, 1) / (tf.reduce_sum(tf.cast(masks, dtype=tf.float32), 1) + 1e-9)
-        self.user_eb = tf.layers.dense(self.item_his_eb_mean, hidden_size, activation=None)
-        self.build_sampled_softmax_loss(self.item_eb, self.user_eb)
+        self.item_his_eb_mean = tf.reduce_sum(self.item_his_eb, 1) / (tf.reduce_sum(tf.cast(masks, dtype=tf.float32), 1) + 1e-9)   # 结合mask保留的位数，求平均
+        self.user_eb = tf.layers.dense(self.item_his_eb_mean, hidden_size, activation=None)  # item 求平局后输入全链接链接，输出个数不变，维度变为hiddensize
+        self.build_sampled_softmax_loss(self.item_eb, self.user_eb)   # 设定loss 公式和优化器
+
+
+#不要这个基线避免tf降级
 
 class Model_GRU4REC(Model):
     def __init__(self, n_mid, embedding_dim, hidden_size, batch_size, seq_len=256):
@@ -95,8 +98,7 @@ class Model_GRU4REC(Model):
         self.user_eb = final_state1
         self.build_sampled_softmax_loss(self.item_eb, self.user_eb)
 
-
-def get_shape(inputs):
+def get_shape(inputs):  # 获取变量维度，屏蔽动态还是静态情况下
     dynamic_shape = tf.shape(inputs)
     static_shape = inputs.get_shape().as_list()
     shape = []
@@ -177,7 +179,7 @@ class CapsuleNetwork(tf.layers.Layer):
         atten = tf.matmul(interest_capsule, tf.reshape(item_eb, [-1, self.dim, 1]))
         atten = tf.nn.softmax(tf.pow(tf.reshape(atten, [-1, self.num_interest]), 1))
 
-        if self.hard_readout:
+        if self.hard_readout:  # 读一个还是soft的平均
             readout = tf.gather(tf.reshape(interest_capsule, [-1, self.dim]), tf.argmax(atten, axis=1, output_type=tf.int32) + tf.range(tf.shape(item_his_emb)[0]) * self.num_interest)
         else:
             readout = tf.matmul(tf.reshape(atten, [get_shape(item_his_emb)[0], 1, self.num_interest]), interest_capsule)

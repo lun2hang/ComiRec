@@ -32,12 +32,12 @@ parser.add_argument('--topN', type=int, default=50)
 
 best_metric = 0
 
-def prepare_data(src, target):
+def prepare_data(src, target):  # 2个元组展开成4个元素，冗余
     nick_id, item_id = src
     hist_item, hist_mask = target
     return nick_id, item_id, hist_item, hist_mask
 
-def load_item_cate(source):
+def load_item_cate(source):  # 从文件加载int化item id 到int化 cate id的dict
     item_cate = {}
     with open(source, 'r') as f:
         for line in f:
@@ -47,7 +47,7 @@ def load_item_cate(source):
             item_cate[item_id] = cate_id
     return item_cate
 
-def compute_diversity(item_list, item_cate_map):
+def compute_diversity(item_list, item_cate_map):  #  两两不相同的cate对，为一个多样性。求和求平均
     n = len(item_list)
     diversity = 0.0
     for i in range(n):
@@ -56,7 +56,7 @@ def compute_diversity(item_list, item_cate_map):
     diversity /= ((n-1) * n / 2)
     return diversity
 
-def evaluate_full(sess, test_data, model, model_path, batch_size, item_cate_map, save=True, coef=None):
+def evaluate_full(sess, test_data, model, model_path, batch_size, item_cate_map, save=True, coef=None):  #
     topN = args.topN
 
     item_embs = model.output_item(sess)
@@ -172,8 +172,8 @@ def evaluate_full(sess, test_data, model, model_path, batch_size, item_cate_map,
 def get_model(dataset, model_type, item_count, batch_size, maxlen):
     if model_type == 'DNN': 
         model = Model_DNN(item_count, args.embedding_dim, args.hidden_size, batch_size, maxlen)
-    elif model_type == 'GRU4REC': 
-        model = Model_GRU4REC(item_count, args.embedding_dim, args.hidden_size, batch_size, maxlen)
+    #elif model_type == 'GRU4REC':
+    #    model = Model_GRU4REC(item_count, args.embedding_dim, args.hidden_size, batch_size, maxlen)
     elif model_type == 'MIND':
         relu_layer = True if dataset == 'book' else False
         model = Model_MIND(item_count, args.embedding_dim, args.hidden_size, batch_size, args.num_interest, maxlen, relu_layer=relu_layer)
