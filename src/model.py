@@ -84,7 +84,7 @@ class Model_DNN(Model):
 
 
 #不要这个基线避免tf降级
-
+'''
 class Model_GRU4REC(Model):
     def __init__(self, n_mid, embedding_dim, hidden_size, batch_size, seq_len=256):
         super(Model_GRU4REC, self).__init__(n_mid, embedding_dim, hidden_size,
@@ -97,7 +97,7 @@ class Model_GRU4REC(Model):
 
         self.user_eb = final_state1
         self.build_sampled_softmax_loss(self.item_eb, self.user_eb)
-
+'''
 def get_shape(inputs):  # 获取变量维度，屏蔽动态还是静态情况下
     dynamic_shape = tf.shape(inputs)
     static_shape = inputs.get_shape().as_list()
